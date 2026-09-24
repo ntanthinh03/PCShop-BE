@@ -3,11 +3,20 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 class AuthService
 {
+    /**
+     * Constructor promotion
+     * Tiêm (Inject) Interface của Repository vào Service. 
+     * Nhờ vậy, Service không cần biết DB là gì, nó chỉ gọi các hàm đã định nghĩa trong Interface.
+     */
+    public function __construct(public UserRepositoryInterface $userRepository)
+    {
+    }
     /**
      * Handle user registration logic.
      *
@@ -21,11 +30,10 @@ class AuthService
         // hệ thống sẽ hoàn tác (rollback) lại toàn bộ, không lưu dữ liệu bị lỗi vào database.
         return DB::transaction(function () use ($data) {
             
-            // 1. Tạo bản ghi User mới trong database
-            $user = User::create([
+            // 1. Tạo bản ghi User thông qua Repository (không gọi Model trực tiếp nữa)
+            $user = $this->userRepository->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                // Hash::make() dùng để mã hóa mật khẩu trước khi lưu vào DB (bắt buộc vì lý do bảo mật)
                 'password' => Hash::make($data['password']),
             ]);
 
@@ -48,8 +56,8 @@ class AuthService
      */
     public function loginUser(array $data): ?array
     {
-        // 1. Tìm user trong database dựa vào email
-        $user = User::where('email', $data['email'])->first();
+        // 1. Tìm user thông qua Repository thay vì chọc thẳng vào DB
+        $user = $this->userRepository->findByEmail($data['email']);
 
         // 2. Kiểm tra xem user có tồn tại không VÀ mật khẩu có khớp không
         // Hàm Hash::check sẽ tự động so sánh mật khẩu người dùng nhập vào với mật khẩu đã mã hóa trong DB
