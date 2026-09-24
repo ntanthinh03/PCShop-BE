@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\V1\CategoryController;
 Route::prefix('v1/auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 // Nhóm các route API liên quan đến Danh mục (Categories) - Yêu cầu phải có Token (đã đăng nhập)

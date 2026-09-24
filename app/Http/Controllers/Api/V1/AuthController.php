@@ -7,7 +7,10 @@ use App\Http\Requests\Api\V1\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 
+use App\Http\Requests\Api\V1\RegisterRequest;
 use App\Http\Requests\Api\V1\LoginRequest;
+use App\Http\Requests\Api\V1\ForgotPasswordRequest;
+use App\Http\Requests\Api\V1\ResetPasswordRequest;
 
 class AuthController extends Controller
 {
@@ -63,6 +66,39 @@ class AuthController extends Controller
             'status' => 'success',
             'message' => 'User logged in successfully.',
             'data' => $result
+        ], 200);
+    }
+
+    /**
+     * API Gửi mail Quên mật khẩu
+     */
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
+    {
+        $this->authService->forgotPassword($request->validated());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password reset OTP sent to your email.'
+        ], 200);
+    }
+
+    /**
+     * API Đặt lại mật khẩu mới
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $result = $this->authService->resetPassword($request->validated());
+
+        if (!$result) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid OTP or email.'
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password has been reset successfully.'
         ], 200);
     }
 }
