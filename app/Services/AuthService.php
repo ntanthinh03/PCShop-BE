@@ -40,4 +40,30 @@ class AuthService
             ];
         });
     }
+    /**
+     * Xử lý logic đăng nhập
+     *
+     * @param array $data Gồm email và password
+     * @return array|null Trả về mảng user+token nếu thành công, null nếu thất bại
+     */
+    public function loginUser(array $data): ?array
+    {
+        // 1. Tìm user trong database dựa vào email
+        $user = User::where('email', $data['email'])->first();
+
+        // 2. Kiểm tra xem user có tồn tại không VÀ mật khẩu có khớp không
+        // Hàm Hash::check sẽ tự động so sánh mật khẩu người dùng nhập vào với mật khẩu đã mã hóa trong DB
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            // Đăng nhập thất bại
+            return null;
+        }
+
+        // 3. Đăng nhập thành công, tạo Token mới
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $token,
+        ];
+    }
 }
