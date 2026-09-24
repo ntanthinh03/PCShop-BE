@@ -26,3 +26,10 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 project.md
+
+# AI configuration files
+.claude/
+.agents/
+AGENTS.md
+CLAUDE.md
+boost.json
