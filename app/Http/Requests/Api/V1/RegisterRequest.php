@@ -30,11 +30,11 @@ class RegisterRequest extends FormRequest
         return [
             // 'name' bắt buộc có, là chuỗi, tối đa 255 ký tự
             'name' => ['required', 'string', 'max:255'],
-            
+
             // 'email' bắt buộc có, định dạng email, tối đa 255 ký tự, 
             // và quan trọng nhất: phải duy nhất (unique) trong bảng 'users'.
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            
+
             // 'password' bắt buộc có, chuỗi, độ dài tối thiểu 8 ký tự.
             // Rule 'confirmed' bắt buộc client phải gửi kèm trường 'password_confirmation' giống hệt 'password'.
             'password' => ['required', 'string', 'min:8', 'confirmed'],

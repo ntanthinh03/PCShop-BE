@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\LoginRequest;
 use App\Http\Requests\Api\V1\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-
-use App\Http\Requests\Api\V1\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -15,9 +14,7 @@ class AuthController extends Controller
      * Constructor promotion (Tính năng của PHP 8)
      * Laravel (Dependency Injection) sẽ tự động đưa AuthService vào biến $authService
      */
-    public function __construct(public AuthService $authService)
-    {
-    }
+    public function __construct(public AuthService $authService) {}
 
     /**
      * API Đăng ký tài khoản
@@ -36,7 +33,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully.',
-            'data' => $result
+            'data' => $result,
         ], 201);
     }
 
@@ -51,7 +48,7 @@ class AuthController extends Controller
         $result = $this->authService->loginUser($validatedData);
 
         // Nếu kết quả trả về null nghĩa là sai tài khoản hoặc mật khẩu
-        if (!$result) {
+        if (! $result) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials.', // Thông báo chung chung để tránh hacker dò lỗi
@@ -62,7 +59,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User logged in successfully.',
-            'data' => $result
+            'data' => $result,
         ], 200);
     }
 }

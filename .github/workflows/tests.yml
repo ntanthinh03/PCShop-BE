@@ -56,10 +56,9 @@ jobs:
 
       - name: Check Code Style (Laravel Pint)
         run: vendor/bin/pint --test
-        continue-on-error: true
 
       - name: Run Tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
-        run: php artisan test --parallel
+        run: php artisan test
