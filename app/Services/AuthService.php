@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
-use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthService
