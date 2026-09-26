@@ -46,13 +46,17 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
-
       - name: Prepare Laravel Environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+        run: cp .env.example .env
+
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+      - name: Generate App Key
+        run: php artisan key:generate
+
+      - name: Discover Packages
+        run: php artisan package:discover --ansi
 
       - name: Check Code Style (Laravel Pint)
         run: vendor/bin/pint --test

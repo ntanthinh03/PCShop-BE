@@ -127,16 +127,19 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Prepare Laravel Environment
+        run: cp .env.example .env
+
       - name: Install Dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
 
       - name: Run Tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
         run: |
-          cp .env.example .env
           php artisan key:generate
+          php artisan package:discover --ansi
           php artisan test
 
   # ==========================================
