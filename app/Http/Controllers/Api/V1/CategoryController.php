@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -33,11 +33,19 @@ class CategoryController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => new CategoryResource($category)
+            'data' => new CategoryResource($category),
         ], 201);
     }
 
-    public function show(string $id) { /* Để sau */ }
-    public function update(Request $request, string $id) { /* Để sau */ }
-    public function destroy(string $id) { /* Để sau */ }
+    public function show(string $id)
+    { /* Để sau */
+    }
+
+    public function update(Request $request, string $id)
+    { /* Để sau */
+    }
+
+    public function destroy(string $id)
+    { /* Để sau */
+    }
 }

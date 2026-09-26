@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,8 +16,8 @@ class AppServiceProvider extends ServiceProvider
         // Khai báo với Laravel: Nếu ai (như AuthService) cần UserRepositoryInterface,
         // hãy tự động đưa cho họ class UserRepository (chuẩn Dependency Injection).
         $this->app->bind(
-            \App\Repositories\Contracts\UserRepositoryInterface::class,
-            \App\Repositories\Eloquent\UserRepository::class
+            UserRepositoryInterface::class,
+            UserRepository::class,
         );
     }
 

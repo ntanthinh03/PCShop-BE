@@ -2,29 +2,26 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPasswordMail;
 
 class AuthService
 {
     /**
      * Constructor promotion
-     * Tiêm (Inject) Interface của Repository vào Service. 
+     * Tiêm (Inject) Interface của Repository vào Service.
      * Nhờ vậy, Service không cần biết DB là gì, nó chỉ gọi các hàm đã định nghĩa trong Interface.
      */
-    public function __construct(public UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(public UserRepositoryInterface $userRepository) {}
+
     /**
      * Handle user registration logic.
      *
-     * @param array $data Contains validated registration data (name, email, password)
-     * @return array
+     * @param  array  $data  Contains validated registration data (name, email, password)
      */
     public function registerUser(array $data): array
     {
@@ -32,7 +29,7 @@ class AuthService
         // Đảm bảo nếu có lỗi xảy ra ở giữa chừng (ví dụ: tạo user thành công nhưng lỗi lúc tạo token),
         // hệ thống sẽ hoàn tác (rollback) lại toàn bộ, không lưu dữ liệu bị lỗi vào database.
         return DB::transaction(function () use ($data) {
-            
+
             // 1. Tạo bản ghi User thông qua Repository (không gọi Model trực tiếp nữa)
             $user = $this->userRepository->create([
                 'name' => $data['name'],
@@ -51,10 +48,11 @@ class AuthService
             ];
         });
     }
+
     /**
      * Xử lý logic đăng nhập
      *
-     * @param array $data Gồm email và password
+     * @param  array  $data  Gồm email và password
      * @return array|null Trả về mảng user+token nếu thành công, null nếu thất bại
      */
     public function loginUser(array $data): ?array
@@ -64,7 +62,7 @@ class AuthService
 
         // 2. Kiểm tra xem user có tồn tại không VÀ mật khẩu có khớp không
         // Hàm Hash::check sẽ tự động so sánh mật khẩu người dùng nhập vào với mật khẩu đã mã hóa trong DB
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        if (! $user || ! Hash::check($data['password'], $user->password)) {
             // Đăng nhập thất bại
             return null;
         }
@@ -112,7 +110,7 @@ class AuthService
             ->first();
 
         // OTP sai hoặc không tồn tại
-        if (!$record) {
+        if (! $record) {
             return false;
         }
 
@@ -124,5 +122,14 @@ class AuthService
         DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
 
         return true;
+    }
+
+    /**
+     * Xử lý đăng xuất (Xóa token hiện tại)
+     */
+    public function logoutUser(User $user): void
+    {
+        // Xóa Token hiện tại mà người dùng đang sử dụng để gửi request
+        $user->currentAccessToken()->delete();
     }
 }

@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pcshop-backend
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    networks:
+      - pcshop-net
+
+networks:
+  pcshop-net:
+    driver: bridge

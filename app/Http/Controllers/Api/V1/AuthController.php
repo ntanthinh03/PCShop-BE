@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\ForgotPasswordRequest;
+use App\Http\Requests\Api\V1\LoginRequest;
 use App\Http\Requests\Api\V1\RegisterRequest;
+use App\Http\Requests\Api\V1\ResetPasswordRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-
-use App\Http\Requests\Api\V1\RegisterRequest;
-use App\Http\Requests\Api\V1\LoginRequest;
-use App\Http\Requests\Api\V1\ForgotPasswordRequest;
-use App\Http\Requests\Api\V1\ResetPasswordRequest;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -18,9 +17,7 @@ class AuthController extends Controller
      * Constructor promotion (Tính năng của PHP 8)
      * Laravel (Dependency Injection) sẽ tự động đưa AuthService vào biến $authService
      */
-    public function __construct(public AuthService $authService)
-    {
-    }
+    public function __construct(public AuthService $authService) {}
 
     /**
      * API Đăng ký tài khoản
@@ -39,7 +36,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully.',
-            'data' => $result
+            'data' => $result,
         ], 201);
     }
 
@@ -54,7 +51,7 @@ class AuthController extends Controller
         $result = $this->authService->loginUser($validatedData);
 
         // Nếu kết quả trả về null nghĩa là sai tài khoản hoặc mật khẩu
-        if (!$result) {
+        if (! $result) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials.', // Thông báo chung chung để tránh hacker dò lỗi
@@ -65,7 +62,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User logged in successfully.',
-            'data' => $result
+            'data' => $result,
         ], 200);
     }
 
@@ -78,7 +75,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Password reset OTP sent to your email.'
+            'message' => 'Password reset OTP sent to your email.',
         ], 200);
     }
 
@@ -89,16 +86,29 @@ class AuthController extends Controller
     {
         $result = $this->authService->resetPassword($request->validated());
 
-        if (!$result) {
+        if (! $result) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid OTP or email.'
+                'message' => 'Invalid OTP or email.',
             ], 400);
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Password has been reset successfully.'
+            'message' => 'Password has been reset successfully.',
+        ], 200);
+    }
+
+    /**
+     * API Đăng xuất
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $this->authService->logoutUser($request->user());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User logged out successfully.',
         ], 200);
     }
 }
