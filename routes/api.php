@@ -17,7 +17,7 @@ Route::prefix('v1/auth')->group(function () {
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Đăng xuất
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-    
+
     // Danh mục
     Route::apiResource('categories', CategoryController::class);
 });
