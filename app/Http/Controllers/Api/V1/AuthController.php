@@ -11,6 +11,7 @@ use App\Http\Requests\Api\V1\RegisterRequest;
 use App\Http\Requests\Api\V1\ResetPasswordRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -97,6 +98,19 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Password has been reset successfully.',
+        ], 200);
+    }
+
+    /**
+     * API Đăng xuất
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $this->authService->logoutUser($request->user());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User logged out successfully.',
         ], 200);
     }
 }

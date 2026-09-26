@@ -123,4 +123,13 @@ class AuthService
 
         return true;
     }
+
+    /**
+     * Xử lý đăng xuất (Xóa token hiện tại)
+     */
+    public function logoutUser(User $user): void
+    {
+        // Xóa Token hiện tại mà người dùng đang sử dụng để gửi request
+        $user->currentAccessToken()->delete();
+    }
 }

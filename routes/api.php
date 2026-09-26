@@ -13,8 +13,12 @@ Route::prefix('v1/auth')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
-// Nhóm các route API liên quan đến Danh mục (Categories) - Yêu cầu phải có Token (đã đăng nhập)
+// Nhóm các route API yêu cầu phải có Token (đã đăng nhập)
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    // Đăng xuất
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    
+    // Danh mục
     Route::apiResource('categories', CategoryController::class);
 });
 
