@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
             // 'name' bắt buộc có, là chuỗi, tối đa 255 ký tự
             'name' => ['required', 'string', 'max:255'],
 
-            // 'email' bắt buộc có, định dạng email, tối đa 255 ký tự, 
+            // 'email' bắt buộc có, định dạng email, tối đa 255 ký tự,
             // và quan trọng nhất: phải duy nhất (unique) trong bảng 'users'.
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 

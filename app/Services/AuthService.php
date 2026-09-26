@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPasswordMail;
 
 class AuthService
 {
     /**
      * Constructor promotion
-     * Tiêm (Inject) Interface của Repository vào Service. 
+     * Tiêm (Inject) Interface của Repository vào Service.
      * Nhờ vậy, Service không cần biết DB là gì, nó chỉ gọi các hàm đã định nghĩa trong Interface.
      */
     public function __construct(public UserRepositoryInterface $userRepository) {}
@@ -21,8 +21,7 @@ class AuthService
     /**
      * Handle user registration logic.
      *
-     * @param array $data Contains validated registration data (name, email, password)
-     * @return array
+     * @param  array  $data  Contains validated registration data (name, email, password)
      */
     public function registerUser(array $data): array
     {
@@ -53,7 +52,7 @@ class AuthService
     /**
      * Xử lý logic đăng nhập
      *
-     * @param array $data Gồm email và password
+     * @param  array  $data  Gồm email và password
      * @return array|null Trả về mảng user+token nếu thành công, null nếu thất bại
      */
     public function loginUser(array $data): ?array
@@ -111,7 +110,7 @@ class AuthService
             ->first();
 
         // OTP sai hoặc không tồn tại
-        if (!$record) {
+        if (! $record) {
             return false;
         }
 
