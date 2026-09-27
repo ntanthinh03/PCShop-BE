@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +29,14 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/orders/checkout', [OrderController::class, 'checkout']);
     Route::get('/orders/history', [OrderController::class, 'history']);
     Route::get('/orders/{code}', [OrderController::class, 'show']);
-    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->middleware('role:Admin,Staff');
+
+    // Đánh giá sản phẩm (Reviews)
+    Route::post('/products/{product}/reviews', [ReviewController::class, 'store']);
 });
+
+// Xem danh sách đánh giá sản phẩm (Công khai)
+Route::get('/v1/products/{product}/reviews', [ReviewController::class, 'index']);
 
 // Route mặc định sinh ra để lấy thông tin user hiện tại (cần truyền Token vào Header)
 Route::get('/user', function (Request $request) {

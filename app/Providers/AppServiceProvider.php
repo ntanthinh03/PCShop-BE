@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\ReviewRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,6 +41,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             OrderRepositoryInterface::class,
             OrderRepository::class,
+        );
+
+        $this->app->bind(
+            ReviewRepositoryInterface::class,
+            ReviewRepository::class,
         );
     }
 
