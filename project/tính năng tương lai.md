@@ -7,12 +7,10 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 ## 💡 1. Ý TƯỞNG (BACKLOG / FUTURE IDEAS)
 *Các tính năng được lên kế hoạch phát triển trong tương lai:*
 
-- [ ] **Quản lý Sản phẩm (Product Management):**
-  - CRUD sản phẩm, phân loại theo danh mục, quản lý biến thể (màu sắc, dung lượng, cấu hình PC).
-  - Tải lên nhiều hình ảnh sản phẩm (S3 / Local Storage).
 - [ ] **Giỏ hàng & Đơn hàng (Cart & Order Management):**
   - Giỏ hàng lưu theo User / Session.
-  - Xử lý Đơn hàng, Tính toán tổng tiền, Mã giảm giá (Voucher/Coupon).
+  - Xử lý Đơn hàng với ACID Transaction (`DB::transaction()`), Kiểm tra số lượng tồn kho & Pessimistic Locking.
+  - Mã giảm giá (Voucher/Coupon).
   - Lịch sử đơn hàng và theo dõi trạng thái giao hàng.
 - [ ] **Thanh toán trực tuyến (Payment Gateways Integration):**
   - Tích hợp VNPay / MoMo / ZaloPay.
@@ -27,7 +25,18 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 ---
 
 ## 🚧 2. ĐANG LÀM (IN PROGRESS)
-*Các tính năng đang được phát triển ở nhánh hiện tại (`feature/cicd`):*
+*Các tính năng đang và sắp chuẩn bị thực hiện theo chu kỳ SDLC mới:*
+
+- [ ] **Quản lý Danh mục & Sản phẩm (Category & Product Management API):**
+  - [ ] Hoàn thiện CRUD Danh mục sản phẩm (Category Controller, Service, Repository & Resource).
+  - [ ] Quản lý Sản phẩm (CRUD, Slug, SKU, Tồn kho, Giá, Phân trang & Search/Filter).
+  - [ ] Tải lên nhiều hình ảnh sản phẩm (Media/Image Upload).
+  - [ ] Viết Feature Test E2E mô phỏng đầy đủ luồng CRUD Danh mục & Sản phẩm.
+
+---
+
+## ✅ 3. ĐÃ HOÀN THÀNH (DONE)
+*Các tính năng đã hoàn thiện, có Unit/Feature Test và đã sẵn sàng/merged:*
 
 - [x] **Tích hợp & Triển khai tự động (CI/CD Pipeline & Dockerization):**
   - [x] Cấu hình GitHub Actions chạy Test tự động và Lint code (Pint).
@@ -36,12 +45,6 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 - [x] **Thiết lập Bộ quy tắc AI Agent & SDLC Lifecycle (`.ai/rules` & `project/`):**
   - [x] Hợp đồng khóa chặt hành vi AI (`.ai/rules/ai_contract.md`).
   - [x] Quy trình 6 bước phát triển tự động (`.ai/rules/sdlc_lifecycle.md`).
-
----
-
-## ✅ 3. ĐÃ HOÀN THÀNH (DONE)
-*Các tính năng đã hoàn thiện, có Unit/Feature Test và đã sẵn sàng/merged:*
-
 - [x] **Hệ thống Xác thực Người dùng (Authentication API V1):**
   - [x] Đăng ký tài khoản (`POST /api/v1/auth/register`) với mã hóa mật khẩu Hash.
   - [x] Đăng nhập (`POST /api/v1/auth/login`) cấp Sanctum Personal Access Token.
@@ -49,5 +52,5 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
   - [x] Quên mật khẩu & Đặt lại mật khẩu qua Email OTP (`POST /api/v1/auth/forgot-password`, `POST /api/v1/auth/reset-password`).
   - [x] Repository-Service Pattern cho Auth Module.
   - [x] 100% Feature Test bao phủ các luồng Auth (`tests/Feature/AuthTest.php`).
-- [x] **Quản lý Danh mục (Category Management Baseline):**
+- [x] **Quản lý Danh mục Cơ bản (Category Baseline):**
   - [x] Migration & Model `Category`.
