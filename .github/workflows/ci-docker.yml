@@ -41,10 +41,6 @@ on:
           - 'ubuntu-latest'
           - 'self-hosted'
 
-env:
-  DOCKERHUB_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/pcshop-be
-  GHCR_IMAGE: ghcr.io/${{ github.repository }}
-
 jobs:
   # ==========================================
   # 1. Prepare: Xác định version, tags, metadata
@@ -190,20 +186,25 @@ jobs:
         id: meta
         run: |
           TAG="${{ needs.prepare.outputs.image_tag }}"
+          GHCR_REPO=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          GHCR_IMAGE="ghcr.io/${GHCR_REPO}"
+
+          DOCKERHUB_USER=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          DOCKERHUB_IMAGE="${DOCKERHUB_USER}/pcshop-be"
           TAGS=""
           
           if [[ "${{ github.event.inputs.push_ghcr }}" == "true" ]]; then
-            TAGS+="${{ env.GHCR_IMAGE }}:${TAG}"$'\n'
+            TAGS+="${GHCR_IMAGE}:${TAG}"$'\n'
             # Thêm latest nếu là prod
             if [[ "${{ github.event.inputs.target_env }}" == "prod" ]]; then
-              TAGS+="${{ env.GHCR_IMAGE }}:latest"$'\n'
+              TAGS+="${GHCR_IMAGE}:latest"$'\n'
             fi
           fi
 
-          if [[ "${{ github.event.inputs.push_dockerhub }}" == "true" ]]; then
-            TAGS+="${{ env.DOCKERHUB_IMAGE }}:${TAG}"$'\n'
+          if [[ "${{ github.event.inputs.push_dockerhub }}" == "true" ]] && [[ -n "$DOCKERHUB_USER" ]]; then
+            TAGS+="${DOCKERHUB_IMAGE}:${TAG}"$'\n'
             if [[ "${{ github.event.inputs.target_env }}" == "prod" ]]; then
-              TAGS+="${{ env.DOCKERHUB_IMAGE }}:latest"$'\n'
+              TAGS+="${DOCKERHUB_IMAGE}:latest"$'\n'
             fi
           fi
 
