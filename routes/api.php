@@ -29,7 +29,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/orders/checkout', [OrderController::class, 'checkout']);
     Route::get('/orders/history', [OrderController::class, 'history']);
     Route::get('/orders/{code}', [OrderController::class, 'show']);
-    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->middleware('role:Admin,Staff');
 
     // Đánh giá sản phẩm (Reviews)
     Route::post('/products/{product}/reviews', [ReviewController::class, 'store']);
