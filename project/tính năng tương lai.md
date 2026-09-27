@@ -7,11 +7,7 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 ## 💡 1. Ý TƯỞNG (BACKLOG / FUTURE IDEAS)
 *Các tính năng được lên kế hoạch phát triển trong tương lai:*
 
-- [ ] **Giỏ hàng & Đơn hàng (Cart & Order Management):**
-  - Giỏ hàng lưu theo User / Session.
-  - Xử lý Đơn hàng với ACID Transaction (`DB::transaction()`), Kiểm tra số lượng tồn kho & Pessimistic Locking.
-  - Mã giảm giá (Voucher/Coupon).
-  - Lịch sử đơn hàng và theo dõi trạng thái giao hàng.
+
 - [ ] **Thanh toán trực tuyến (Payment Gateways Integration):**
   - Tích hợp VNPay / MoMo / ZaloPay.
   - Webhook xử lý trạng thái thanh toán tự động.
@@ -27,17 +23,23 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 ## 🚧 2. ĐANG LÀM (IN PROGRESS)
 *Các tính năng đang và sắp chuẩn bị thực hiện theo chu kỳ SDLC mới:*
 
-- [ ] **Quản lý Danh mục & Sản phẩm (Category & Product Management API):**
-  - [ ] Hoàn thiện CRUD Danh mục sản phẩm (Category Controller, Service, Repository & Resource).
-  - [ ] Quản lý Sản phẩm (CRUD, Slug, SKU, Tồn kho, Giá, Phân trang & Search/Filter).
-  - [ ] Tải lên nhiều hình ảnh sản phẩm (Media/Image Upload).
-  - [ ] Viết Feature Test E2E mô phỏng đầy đủ luồng CRUD Danh mục & Sản phẩm.
+*(Hiện tại chưa có tính năng mới trong mục Đang làm)*
 
 ---
 
 ## ✅ 3. ĐÃ HOÀN THÀNH (DONE)
 *Các tính năng đã hoàn thiện, có Unit/Feature Test và đã sẵn sàng/merged:*
 
+- [x] **Quản lý Danh mục & Sản phẩm (Category & Product Management API):**
+  - [x] Hoàn thiện CRUD Danh mục sản phẩm (Category Controller, Service, Repository & Resource).
+  - [x] Quản lý Sản phẩm (CRUD, Slug, SKU, Tồn kho, Giá, Phân trang & Search/Filter).
+  - [x] Tải lên nhiều hình ảnh sản phẩm (Media/Image Upload support).
+  - [x] 100% Feature Test E2E bao phủ đầy đủ luồng CRUD Danh mục & Sản phẩm (`CategoryTest`, `ProductTest`).
+- [x] **Giỏ hàng & Đơn hàng (Cart & Order Management):**
+  - [x] Xử lý Đơn hàng với ACID Transaction (`DB::transaction()`), Kiểm tra số lượng tồn kho & Pessimistic Locking (`lockForUpdate()`).
+  - [x] API Checkout (`POST /api/v1/orders/checkout`).
+  - [x] Lịch sử đơn hàng (`GET /api/v1/orders/history`), Chi tiết đơn hàng (`GET /api/v1/orders/{code}`) và Cập nhật trạng thái (`PATCH /api/v1/orders/{id}/status`).
+  - [x] 100% Feature Test E2E bao phủ các luồng Đơn hàng (`OrderTest`).
 - [x] **Tích hợp & Triển khai tự động (CI/CD Pipeline & Dockerization):**
   - [x] Cấu hình GitHub Actions chạy Test tự động và Lint code (Pint).
   - [x] Cấu hình Dockerfile & Docker Compose cho môi trường UAT/Production.
