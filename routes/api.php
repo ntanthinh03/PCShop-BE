@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,9 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Đăng xuất
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    // Danh mục
+    // Danh mục & Sản phẩm
     Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('products', ProductController::class);
 });
 
 // Route mặc định sinh ra để lấy thông tin user hiện tại (cần truyền Token vào Header)
