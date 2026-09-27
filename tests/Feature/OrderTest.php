@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\OrderPlacedMail;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -39,6 +41,8 @@ class OrderTest extends TestCase
 
     public function test_user_can_checkout_order_successfully()
     {
+        Mail::fake();
+
         $payload = [
             'shipping_address' => '123 Main Street, NY',
             'items' => [
@@ -72,6 +76,9 @@ class OrderTest extends TestCase
             'user_id' => $this->user->id,
             'total_amount' => 4000.00,
         ]);
+
+        // Kiểm tra Mail OrderPlacedMail được đẩy vào Queue thành công
+        Mail::assertQueued(OrderPlacedMail::class);
     }
 
     public function test_checkout_fails_when_stock_is_insufficient()
