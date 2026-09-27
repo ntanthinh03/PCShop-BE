@@ -29,13 +29,13 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
 ## 🚧 2. ĐANG LÀM (IN PROGRESS)
 *Các tính năng đang được phát triển ở nhánh hiện tại (`feature/cicd`):*
 
-- [ ] **Tích hợp & Triển khai tự động (CI/CD Pipeline & Dockerization):**
+- [x] **Tích hợp & Triển khai tự động (CI/CD Pipeline & Dockerization):**
   - [x] Cấu hình GitHub Actions chạy Test tự động và Lint code (Pint).
   - [x] Cấu hình Dockerfile & Docker Compose cho môi trường UAT/Production.
-  - [ ] Hoàn thiện kiểm thử tự động toàn bộ luồng Auth trên CI server.
-- [ ] **Thiết lập Bộ quy tắc AI Agent & SDLC Lifecycle (`project/`):**
-  - [x] Hợp đồng khóa chặt hành vi AI (`project/ai_contract.md`).
-  - [x] Quy trình 6 bước phát triển tự động (`project/sdlc_lifecycle.md`).
+  - [x] Hoàn thiện kiểm thử tự động toàn bộ luồng Auth trên CI server.
+- [x] **Thiết lập Bộ quy tắc AI Agent & SDLC Lifecycle (`.ai/rules` & `project/`):**
+  - [x] Hợp đồng khóa chặt hành vi AI (`.ai/rules/ai_contract.md`).
+  - [x] Quy trình 6 bước phát triển tự động (`.ai/rules/sdlc_lifecycle.md`).
 
 ---
 
