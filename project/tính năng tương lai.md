@@ -1,6 +1,6 @@
 # 🚀 DANH SÁCH TÍNH NĂNG DỰ ÁN (SHOPFLOW ROADMAP)
 
-Tài liệu này quản lý tiến độ phát triển các tính năng của hệ thống backend ShopFlow theo quy trình **[SDLC 6 bước](file:///c:/laragon/www/ShopFlow/.ai/rules/sdlc_lifecycle.md)**.
+Tài liệu này quản lý tiến độ phát triển các tính năng của hệ thống backend ShopFlow theo quy trình **[SDLC 6 bước](file:///c:/laragon/www/ShopFlow/project/sdlc_lifecycle.md)**.
 
 ---
 
@@ -33,9 +33,9 @@ Tài liệu này quản lý tiến độ phát triển các tính năng của h�
   - [x] Cấu hình GitHub Actions chạy Test tự động và Lint code (Pint).
   - [x] Cấu hình Dockerfile & Docker Compose cho môi trường UAT/Production.
   - [ ] Hoàn thiện kiểm thử tự động toàn bộ luồng Auth trên CI server.
-- [ ] **Thiết lập Bộ quy tắc AI Agent & SDLC Lifecycle (`.ai/rules`):**
-  - [x] Hợp đồng khóa chặt hành vi AI (`ai_contract.md`).
-  - [x] Quy trình 6 bước phát triển tự động (`sdlc_lifecycle.md`).
+- [ ] **Thiết lập Bộ quy tắc AI Agent & SDLC Lifecycle (`project/`):**
+  - [x] Hợp đồng khóa chặt hành vi AI (`project/ai_contract.md`).
+  - [x] Quy trình 6 bước phát triển tự động (`project/sdlc_lifecycle.md`).
 
 ---
 
