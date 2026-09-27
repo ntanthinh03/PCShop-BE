@@ -23,7 +23,7 @@ Dự án này tuân thủ nghiêm ngặt 2 tài liệu quy chuẩn bắt buộc 
 1. **Lập kế hoạch:** Thu thập pain point thật -> Viết **Proto-Spec**.
 2. **Thiết kế:** Gộp Yêu cầu + UI/UX + Schema API trong **1 phiên**, tổ chức theo Skills.
 3. **Xây dựng:** Chạy Plan Mode -> Kỹ sư duyệt Plan -> Code dưới các rào chắn (Hooks & Rules).
-4. **Kiểm thử:** Viết E2E/Feature test mô phỏng thực tế -> Agent tự tìm root cause & sửa lỗi logic khi test lỗi.
+4. **Kiểm thử:** Viết E2E/Feature test mô phỏng thực tế -> Agent tự tìm root cause & sửa lỗi nghiệp vụ chuẩn xác. **CẤM GIAN LẬN TEST:** Không sửa câu lệnh test (assertions) và không viết code logic giả/bypass để ép pass test.
 5. **Triển khai:** Review nhiều lớp (Lint, Scope, CI) -> Kỹ sư duyệt code quan trọng -> Deploy.
 6. **Vận hành:** Giám sát, thu thập phản hồi -> **Lặp lại quay về Bước 1**.
 

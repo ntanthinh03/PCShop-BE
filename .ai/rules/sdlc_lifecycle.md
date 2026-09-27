@@ -31,9 +31,11 @@
 
 ### 🧪 Bước 4: Kiểm thử tự động & Tự sửa lỗi (Self-Healing Testing Gate)
 - **Viết Test E2E / Feature Test:** Tạo các kịch bản test mô phỏng thực tế tương tác người dùng (nhập liệu, gửi request, click chuột).
-- **Cơ chế Tự sửa lỗi (Self-Healing):**
-  - Khi Test FAILED, AI tự đọc Traceback log, tìm ra root cause và **tự sửa lỗi logic của ứng dụng**.
-  - 🛑 **TUYỆT ĐỐI CẤM GIAN LẬN TEST:** Không sửa assertion hoặc mock data để ép test báo xanh giả tạo.
+- **Cơ chế Tự sửa lỗi chuẩn xác (Self-Healing):**
+  - Khi Test FAILED, AI tự đọc Traceback log để tìm đúng **nguyên nhân gốc rễ (Root Cause)** và khắc phục lỗi thực sự trong hệ thống.
+- **🛑 KHÓA CHẶT QUY TẮC NGHƯƠNG CẤM GIAN LẬN TEST (STRICT NO TEST FRAUD):**
+  - **Cấm sửa lại câu lệnh Test (Assertions/Test Cases):** Không được sửa đổi kỳ vọng (expectations/assertions), hạ thấp tiêu chuẩn test hoặc đổi mock data chỉ để test báo XANH (PASSED).
+  - **Cấm sửa bậy Code Logic:** Không được viết code logic giả, bypass câu lệnh `if/else`, swallow exception, hay bypass nghiệp vụ để ép test chạy qua. Code logic ứng dụng phải được giải quyết đúng yêu cầu thực tế của sản phẩm.
 
 ### 🚀 Bước 5: Triển khai & Review nhiều lớp (Multi-Layer Code Review & Deployment)
 - **Review nhiều lớp (Multi-Layer Review):**
