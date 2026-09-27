@@ -27,9 +27,12 @@ Homestead.yaml
 Thumbs.db
 project.md
 
-# AI configuration files
+# AI & Project Local Documentation
+.ai/
+project/
 .claude/
 .agents/
 AGENTS.md
 CLAUDE.md
 boost.json
+project.md
