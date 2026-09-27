@@ -11,12 +11,14 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'brand' => $this->brand,
             'category_id' => $this->category_id,
             'category_name' => $this->whenLoaded('category', fn () => $this->category->name),
             'name' => $this->name,
             'slug' => $this->slug,
             'sku' => $this->sku,
             'description' => $this->description,
+            'specs' => $this->specs ?? (object) [],
             'price' => (float) $this->price,
             'stock_quantity' => $this->stock_quantity,
             'images' => $this->images ?? [],

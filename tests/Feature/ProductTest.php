@@ -51,14 +51,22 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function test_can_create_product()
+    public function test_can_create_product_with_tech_specs()
     {
         $payload = [
             'category_id' => $this->category->id,
+            'brand' => 'Intel',
             'name' => 'Intel Core i9 14900K',
             'slug' => 'intel-i9-14900k',
             'sku' => 'CPU-14900K',
             'description' => 'Flagship desktop CPU',
+            'specs' => [
+                'socket' => 'LGA1700',
+                'cores' => 24,
+                'threads' => 32,
+                'base_clock' => '3.2 GHz',
+                'boost_clock' => '6.0 GHz',
+            ],
             'price' => 589.00,
             'stock_quantity' => 25,
         ];
@@ -70,13 +78,18 @@ class ProductTest extends TestCase
             ->assertJson([
                 'status' => 'success',
                 'data' => [
+                    'brand' => 'Intel',
                     'name' => 'Intel Core i9 14900K',
-                    'sku' => 'CPU-14900K',
+                    'specs' => [
+                        'socket' => 'LGA1700',
+                        'cores' => 24,
+                    ],
                 ],
             ]);
 
         $this->assertDatabaseHas('products', [
             'sku' => 'CPU-14900K',
+            'brand' => 'Intel',
         ]);
     }
 

@@ -15,10 +15,12 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'category_id' => 'required|exists:categories,id',
+            'brand' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug',
             'sku' => 'required|string|max:255|unique:products,sku',
             'description' => 'nullable|string',
+            'specs' => 'nullable|array',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'images' => 'nullable|array',
