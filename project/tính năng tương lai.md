@@ -1,6 +1,6 @@
 # 🚀 DANH SÁCH TÍNH NĂNG DỰ ÁN (SHOPFLOW ROADMAP)
 
-Tài liệu này quản lý tiến độ phát triển các tính năng của hệ thống backend ShopFlow theo quy trình **[SDLC 6 bước](file:///c:/laragon/www/ShopFlow/project/sdlc_lifecycle.md)**.
+Tài liệu này quản lý tiến độ phát triển các tính năng của hệ thống backend ShopFlow theo quy trình **[SDLC 6 bước](file:///c:/laragon/www/ShopFlow/.ai/rules/sdlc_lifecycle.md)**.
 
 ---
 
