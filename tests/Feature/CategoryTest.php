@@ -39,14 +39,16 @@ class CategoryTest extends TestCase
 
     public function test_can_create_category()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
+
         $payload = [
             'name' => 'Gaming PCs',
             'slug' => 'gaming-pcs',
             'description' => 'High performance PCs',
         ];
 
-        $response = $this->actingAs($this->user)
-            ->postJson('/api/v1/categories', $payload);
+        $response = $this->actingAs($admin)
+            ->postJson('/api/v1/admin/categories', $payload);
 
         $response->assertStatus(201)
             ->assertJson([
@@ -81,10 +83,11 @@ class CategoryTest extends TestCase
 
     public function test_can_update_category()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
         $category = Category::create(['name' => 'Mice', 'slug' => 'mice']);
 
-        $response = $this->actingAs($this->user)
-            ->putJson("/api/v1/categories/{$category->id}", [
+        $response = $this->actingAs($admin)
+            ->putJson("/api/v1/admin/categories/{$category->id}", [
                 'name' => 'Wireless Mice',
             ]);
 
@@ -104,10 +107,11 @@ class CategoryTest extends TestCase
 
     public function test_can_delete_category()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
         $category = Category::create(['name' => 'Audio', 'slug' => 'audio']);
 
-        $response = $this->actingAs($this->user)
-            ->deleteJson("/api/v1/categories/{$category->id}");
+        $response = $this->actingAs($admin)
+            ->deleteJson("/api/v1/admin/categories/{$category->id}");
 
         $response->assertStatus(200);
 

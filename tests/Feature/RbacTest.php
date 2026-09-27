@@ -48,7 +48,7 @@ class RbacTest extends TestCase
     public function test_customer_cannot_update_order_status()
     {
         $response = $this->actingAs($this->customer)
-            ->patchJson("/api/v1/orders/{$this->order->id}/status", [
+            ->patchJson("/api/v1/admin/orders/{$this->order->id}/status", [
                 'status' => 'Completed',
             ]);
 
@@ -62,7 +62,7 @@ class RbacTest extends TestCase
     public function test_admin_can_update_order_status()
     {
         $response = $this->actingAs($this->admin)
-            ->patchJson("/api/v1/orders/{$this->order->id}/status", [
+            ->patchJson("/api/v1/admin/orders/{$this->order->id}/status", [
                 'status' => 'Completed',
             ]);
 

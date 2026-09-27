@@ -53,6 +53,8 @@ class ProductTest extends TestCase
 
     public function test_can_create_product_with_tech_specs()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
+
         $payload = [
             'category_id' => $this->category->id,
             'brand' => 'Intel',
@@ -71,8 +73,8 @@ class ProductTest extends TestCase
             'stock_quantity' => 25,
         ];
 
-        $response = $this->actingAs($this->user)
-            ->postJson('/api/v1/products', $payload);
+        $response = $this->actingAs($admin)
+            ->postJson('/api/v1/admin/products', $payload);
 
         $response->assertStatus(201)
             ->assertJson([
@@ -119,6 +121,7 @@ class ProductTest extends TestCase
 
     public function test_can_update_product()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
         $product = Product::create([
             'category_id' => $this->category->id,
             'name' => 'DDR5 RAM 32GB',
@@ -128,8 +131,8 @@ class ProductTest extends TestCase
             'stock_quantity' => 15,
         ]);
 
-        $response = $this->actingAs($this->user)
-            ->putJson("/api/v1/products/{$product->id}", [
+        $response = $this->actingAs($admin)
+            ->putJson("/api/v1/admin/products/{$product->id}", [
                 'price' => 109.99,
                 'stock_quantity' => 20,
             ]);
@@ -151,6 +154,7 @@ class ProductTest extends TestCase
 
     public function test_can_delete_product()
     {
+        $admin = User::factory()->create(['role' => 'Admin']);
         $product = Product::create([
             'category_id' => $this->category->id,
             'name' => 'Z790 Motherboard',
@@ -160,8 +164,8 @@ class ProductTest extends TestCase
             'stock_quantity' => 8,
         ]);
 
-        $response = $this->actingAs($this->user)
-            ->deleteJson("/api/v1/products/{$product->id}");
+        $response = $this->actingAs($admin)
+            ->deleteJson("/api/v1/admin/products/{$product->id}");
 
         $response->assertStatus(200);
 
