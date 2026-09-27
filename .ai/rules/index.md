@@ -1,25 +1,29 @@
 # AI Agent Strict Rules & Behavior Contract
 
-## 📜 HỢP ĐỒNG KHÓA CHẶT HÀNH VI AI AGENT (STRICT AGENT RULES)
+## 📜 HỢP ĐỒNG KHÓA CHẶT HÀNH VI AI AGENT & VÒNG ĐỜI PHÁT TRIỂN (SDLC)
 
-### 1. Schema, API & Tech Stack Guidelines
-- **Khung Schema & API Endpoints:** Phải thiết kế chuẩn xác theo hợp đồng RESTful / GraphQL API (dùng Eloquent Resources, Form Requests).
-- **Cấm đổi Tech Stack:** Giữ nguyên 100% công nghệ (PHP 8.3, Laravel, PostgreSQL, Docker,...). Không tự ý cài đặt thêm dependency/package mới nếu không được chỉ định.
-- **Cấm Mock Data:** Tuyệt đối không dùng dữ liệu giả trong production code.
-- **Giới hạn độ dài file (Sub-300 lines limit):** Mỗi file code không được vượt quá **300 dòng**. Phải tách nhỏ sang Service, Repository, Trait hoặc Helper nếu tiệm cận giới hạn.
+Dự án này tuân thủ nghiêm ngặt 2 tài liệu quy chuẩn bắt buộc cho AI Agent:
+1. 📖 **[Hợp đồng khóa chặt hành vi AI (ai_contract.md)](file:///c:/laragon/www/ShopFlow/.ai/rules/ai_contract.md)**
+2. 🔄 **[Vòng đời phát triển tự động 6 bước (sdlc_lifecycle.md)](file:///c:/laragon/www/ShopFlow/.ai/rules/sdlc_lifecycle.md)**
 
-### 2. Commit Policy
-- **Commit thường xuyên (Atomic Commits):** Thực hiện commit ngay khi hoàn thành từng bước nhỏ hoặc từng test case thành công.
-- Tuân thủ định dạng `feat:`, `fix:`, `test:`, `style:`, `refactor:`.
+---
 
-### 3. Scope Lock (Phạm vi thao tác)
-- **Cấm chạm vào code không liên quan:** Chỉ thao tác trong phạm vi các file/module được chỉ định.
-- **Cấm viết lại (Rewrite) logic module khác:** Phải tái sử dụng (reuse) Interface, Service, Helper hiện có thay vì tự viết lại code trùng lặp.
+### 🛑 1. Tóm tắt Hợp đồng khóa chặt hành vi AI (ai_contract.md)
+- **Schema & API:** Đúng contract RESTful/GraphQL, cấm đổi Tech Stack (PHP 8.3, Laravel, PostgreSQL, Docker,...).
+- **Cấm Mock Data:** Không dùng data giả trong production code.
+- **Giới hạn 300 dòng/file:** Phải tách nhỏ Service/Repository khi file tiệm cận 300 dòng.
+- **CommitPolicy:** Commit thường xuyên (Atomic Commits), format code bằng Pint trước khi push.
+- **Scope Lock:** Không sửa code/module ngoài phạm vi task được giao; không tự ý rewrite logic hiện có.
+- **Dọn dẹp rác:** Không để lại file test tạm, comment rác, `dd()`, `var_dump()`.
+- **Nghiêm cấm gian lận Test:** Không được sửa lại assertion/test data để vượt qua test khi code bị lỗi logic.
 
-### 4. Cleanup & Garbage Script Prevention
-- **Cấm tạo script rác:** Không tạo file test tạm (`test.php`, `debug.php`,...) ở root hoặc source code.
-- **Tự động dọn dẹp:** Dọn dẹp sạch sẽ toàn bộ log tạm, `var_dump()`, `dd()`, `console.log()` trước khi bàn giao.
+---
 
-### 5. E2E & Integrity Testing Rules
-- **Mô phỏng người dùng thật:** Viết Feature/E2E test mô phỏng thực tế tương tác request, click chuột, nhập liệu.
-- **CẤM GIAN LẬN TEST (No Test Fraud):** Khi bài test thất bại (FAILED), **TUYỆT ĐỐI KHÔNG DƯỢC SỬA LẠI NỘI DUNG TEST/ASSERTION** để ép test trôi qua. Phải tìm đúng lỗi logic trong ứng dụng để sửa.
+### 🔄 2. Quy trình 6 bước Vòng đời phát triển tự động (sdlc_lifecycle.md)
+1. **Lập kế hoạch:** Thu thập pain point thật -> Viết **Proto-Spec**.
+2. **Thiết kế:** Gộp Yêu cầu + UI/UX + Schema API trong **1 phiên**, tổ chức theo Skills.
+3. **Xây dựng:** Chạy Plan Mode -> Kỹ sư duyệt Plan -> Code dưới các rào chắn (Hooks & Rules).
+4. **Kiểm thử:** Viết E2E/Feature test mô phỏng thực tế -> Agent tự tìm root cause & sửa lỗi logic khi test lỗi.
+5. **Triển khai:** Review nhiều lớp (Lint, Scope, CI) -> Kỹ sư duyệt code quan trọng -> Deploy.
+6. **Vận hành:** Giám sát, thu thập phản hồi -> **Lặp lại quay về Bước 1**.
+
