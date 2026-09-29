@@ -15,11 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Tạo tài khoản Admin mặc định
+        User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'System Administrator',
+                'password' => bcrypt('admin123'),
+                'role' => 'Admin',
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Tạo tài khoản Khách hàng mặc định
+        User::firstOrCreate(
+            ['email' => 'customer@example.com'],
+            [
+                'name' => 'Nguyen Van A',
+                'password' => bcrypt('password123'),
+                'role' => 'Customer',
+            ]
+        );
     }
 }
