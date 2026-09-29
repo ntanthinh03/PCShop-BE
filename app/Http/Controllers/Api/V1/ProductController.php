@@ -17,7 +17,7 @@ class ProductController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $filters = $request->only(['search', 'category_id']);
+        $filters = $request->only(['search', 'category_id', 'category', 'category_slug']);
         $perPage = (int) $request->get('per_page', 15);
 
         $products = $this->productService->getPaginatedProducts($filters, $perPage);

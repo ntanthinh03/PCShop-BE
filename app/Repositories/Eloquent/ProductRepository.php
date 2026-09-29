@@ -22,6 +22,11 @@ class ProductRepository implements ProductRepositoryInterface
 
         if (! empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
+        } elseif (! empty($filters['category_slug']) || ! empty($filters['category'])) {
+            $catSlug = $filters['category_slug'] ?? $filters['category'];
+            $query->whereHas('category', function ($q) use ($catSlug) {
+                $q->where('slug', $catSlug);
+            });
         }
 
         return $query->latest()->paginate($perPage);
