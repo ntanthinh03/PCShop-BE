@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Traits\HasValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCategoryRequest extends FormRequest
 {
+    use HasValidationRules;
+
     public function authorize(): bool
     {
         return true;
@@ -15,10 +18,6 @@ class UpdateCategoryRequest extends FormRequest
     {
         $categoryId = $this->route('category') ? $this->route('category')->id : null;
 
-        return [
-            'name' => 'sometimes|required|string|max:255',
-            'slug' => 'sometimes|required|string|max:255|unique:categories,slug,'.$categoryId,
-            'description' => 'nullable|string',
-        ];
+        return $this->categoryRules(isUpdate: true, ignoreId: $categoryId);
     }
 }

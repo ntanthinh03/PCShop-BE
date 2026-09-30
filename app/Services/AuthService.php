@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -84,15 +85,15 @@ class AuthService
         // 1. Tạo OTP 6 số
         $otp = sprintf('%06d', mt_rand(100000, 999999));
 
-        // 2. Lưu vào bảng password_reset_tokens (xóa mã cũ nếu có)
+        // 2. Lưu token đã băm vào bảng password_reset_tokens (xóa mã cũ nếu có)
         DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
         DB::table('password_reset_tokens')->insert([
             'email' => $data['email'],
-            'token' => $otp, // Ở thực tế người ta mã hóa Hash::make($otp), nhưng đây ta lưu raw cho dễ test
+            'token' => Hash::make($otp),
             'created_at' => now(),
         ]);
 
-        // 3. Gửi Email chứa OTP (dùng Brevo SMTP)
+        // 3. Gửi Email chứa OTP
         Mail::to($data['email'])->send(new ResetPasswordMail($otp));
 
         return true;
@@ -103,19 +104,30 @@ class AuthService
      */
     public function resetPassword(array $data): bool
     {
-        // 1. Kiểm tra mã OTP trong DB
+        // 1. Tìm bản ghi token của email
         $record = DB::table('password_reset_tokens')
             ->where('email', $data['email'])
-            ->where('token', $data['otp'])
             ->first();
 
-        // OTP sai hoặc không tồn tại
-        if (! $record) {
+        // Không tồn tại hoặc OTP sai
+        if (! $record || ! Hash::check($data['otp'], $record->token)) {
+            return false;
+        }
+
+        // Kiểm tra thời hạn hết hiệu lực (15 phút)
+        $createdAt = Carbon::parse($record->created_at);
+        if ($createdAt->addMinutes(15)->isPast()) {
+            DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
+
             return false;
         }
 
         // 2. Cập nhật mật khẩu mới thông qua Repository
         $user = $this->userRepository->findByEmail($data['email']);
+        if (! $user) {
+            return false;
+        }
+
         $user->update(['password' => Hash::make($data['password'])]);
 
         // 3. Xóa OTP đã sử dụng

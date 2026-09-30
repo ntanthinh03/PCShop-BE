@@ -7,11 +7,14 @@ use App\Http\Requests\Api\V1\CheckoutRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Traits\HasApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    use HasApiResponse;
+
     public function __construct(public OrderService $orderService) {}
 
     public function checkout(CheckoutRequest $request): JsonResponse
@@ -36,16 +39,7 @@ class OrderController extends Controller
     {
         $orders = $this->orderService->getUserOrders($request->user());
 
-        return response()->json([
-            'status' => 'success',
-            'data' => OrderResource::collection($orders),
-            'meta' => [
-                'current_page' => $orders->currentPage(),
-                'last_page' => $orders->lastPage(),
-                'per_page' => $orders->perPage(),
-                'total' => $orders->total(),
-            ],
-        ], 200);
+        return $this->paginatedResponse($orders, OrderResource::collection($orders));
     }
 
     public function show(string $code): JsonResponse

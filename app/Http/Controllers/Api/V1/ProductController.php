@@ -8,11 +8,14 @@ use App\Http\Requests\Api\V1\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
+use App\Traits\HasApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    use HasApiResponse;
+
     public function __construct(public ProductService $productService) {}
 
     public function index(Request $request): JsonResponse
@@ -22,16 +25,7 @@ class ProductController extends Controller
 
         $products = $this->productService->getPaginatedProducts($filters, $perPage);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => ProductResource::collection($products),
-            'meta' => [
-                'current_page' => $products->currentPage(),
-                'last_page' => $products->lastPage(),
-                'per_page' => $products->perPage(),
-                'total' => $products->total(),
-            ],
-        ], 200);
+        return $this->paginatedResponse($products, ProductResource::collection($products));
     }
 
     public function store(StoreProductRequest $request): JsonResponse
@@ -41,7 +35,7 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Product created successfully.',
-            'data' => new ProductResource($product->load('category')),
+            'data' => new ProductResource($product->loadMissing('category')),
         ], 201);
     }
 
@@ -49,7 +43,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'data' => new ProductResource($product->load('category')),
+            'data' => new ProductResource($product->loadMissing('category')),
         ], 200);
     }
 
@@ -60,7 +54,7 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Product updated successfully.',
-            'data' => new ProductResource($product->fresh()->load('category')),
+            'data' => new ProductResource($product->fresh('category')),
         ], 200);
     }
 

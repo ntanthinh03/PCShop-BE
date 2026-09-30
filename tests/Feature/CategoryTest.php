@@ -115,8 +115,29 @@ class CategoryTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('categories', [
+        $this->assertSoftDeleted('categories', [
             'id' => $category->id,
         ]);
+    }
+
+    public function test_can_update_category_keeping_same_slug()
+    {
+        $admin = User::factory()->create(['role' => 'Admin']);
+        $category = Category::create(['name' => 'Original Cat', 'slug' => 'original-cat']);
+
+        $response = $this->actingAs($admin)
+            ->putJson("/api/v1/admin/categories/{$category->id}", [
+                'name' => 'Updated Cat Name',
+                'slug' => 'original-cat',
+            ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'data' => [
+                    'name' => 'Updated Cat Name',
+                    'slug' => 'original-cat',
+                ],
+            ]);
     }
 }

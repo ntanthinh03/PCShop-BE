@@ -169,8 +169,106 @@ class ProductTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('products', [
+        $this->assertSoftDeleted('products', [
             'id' => $product->id,
         ]);
+    }
+
+    public function test_product_responses_include_category_information()
+    {
+        $admin = User::factory()->create(['role' => 'Admin']);
+
+        // 1. Create product response includes category
+        $createPayload = [
+            'category_id' => $this->category->id,
+            'name' => 'NVMe SSD 1TB',
+            'slug' => 'nvme-ssd-1tb',
+            'sku' => 'SSD-NVME-1TB',
+            'price' => 99.99,
+            'stock_quantity' => 10,
+        ];
+
+        $createResponse = $this->actingAs($admin)
+            ->postJson('/api/v1/admin/products', $createPayload);
+
+        $createResponse->assertStatus(201)
+            ->assertJson([
+                'status' => 'success',
+                'data' => [
+                    'category_id' => $this->category->id,
+                    'category_name' => $this->category->name,
+                    'category_slug' => $this->category->slug,
+                    'category' => [
+                        'id' => $this->category->id,
+                        'name' => $this->category->name,
+                        'slug' => $this->category->slug,
+                    ],
+                ],
+            ]);
+
+        $productId = $createResponse->json('data.id');
+
+        // 2. Show product response includes category
+        $showResponse = $this->actingAs($this->user)
+            ->getJson("/api/v1/products/{$productId}");
+
+        $showResponse->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'data' => [
+                    'category_name' => $this->category->name,
+                    'category' => [
+                        'id' => $this->category->id,
+                    ],
+                ],
+            ]);
+
+        // 3. Update product response includes category
+        $updateResponse = $this->actingAs($admin)
+            ->putJson("/api/v1/admin/products/{$productId}", [
+                'price' => 89.99,
+            ]);
+
+        $updateResponse->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'data' => [
+                    'price' => 89.99,
+                    'category_name' => $this->category->name,
+                    'category' => [
+                        'id' => $this->category->id,
+                    ],
+                ],
+            ]);
+    }
+
+    public function test_can_update_product_keeping_same_slug_and_sku()
+    {
+        $admin = User::factory()->create(['role' => 'Admin']);
+        $product = Product::create([
+            'category_id' => $this->category->id,
+            'name' => 'Original Product',
+            'slug' => 'original-slug',
+            'sku' => 'ORIGINAL-SKU',
+            'price' => 50.00,
+            'stock_quantity' => 5,
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->putJson("/api/v1/admin/products/{$product->id}", [
+                'name' => 'Updated Product Name',
+                'slug' => 'original-slug',
+                'sku' => 'ORIGINAL-SKU',
+            ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'data' => [
+                    'name' => 'Updated Product Name',
+                    'slug' => 'original-slug',
+                    'sku' => 'ORIGINAL-SKU',
+                ],
+            ]);
     }
 }

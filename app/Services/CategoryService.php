@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
@@ -32,6 +33,10 @@ class CategoryService
 
     public function deleteCategory(Category $category): bool
     {
-        return $this->categoryRepository->delete($category);
+        return DB::transaction(function () use ($category): bool {
+            $category->products()->delete();
+
+            return $this->categoryRepository->delete($category);
+        });
     }
 }
