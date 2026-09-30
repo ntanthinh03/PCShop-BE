@@ -41,31 +41,56 @@ class ProductSeeder extends Seeder
         $brands = ['ASUS', 'MSI', 'Gigabyte', 'Intel', 'AMD', 'NVIDIA', 'Corsair', 'Kingston', 'Samsung', 'Logitech', 'Razer', 'Dell', 'LG', 'Acer', 'Lenovo', 'Keychron', 'Sihoo'];
 
         $images = [
-            'pc' => [
-                'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=500',
-                'https://images.unsplash.com/photo-1587202372583-49330a15584d?w=500',
-                'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=500',
-                'https://images.unsplash.com/photo-1593640408182-31c228f8a9e3?w=500',
-            ],
             'laptop' => [
                 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500',
                 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=500',
                 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500',
                 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500',
             ],
-            'component' => [
+            'pc' => [
+                'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500',
                 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=500',
                 'https://images.unsplash.com/photo-1587202372583-49330a15584d?w=500',
             ],
+            'cpu' => [
+                'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500',
+                'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=500',
+            ],
+            'vga' => [
+                'https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=500',
+                'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=500',
+            ],
+            'mainboard' => [
+                'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500',
+                'https://images.unsplash.com/photo-1562976540-1502c2145186?w=500',
+            ],
+            'ram' => [
+                'https://images.unsplash.com/photo-1562976540-1502c2145186?w=500',
+                'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=500',
+            ],
+            'case' => [
+                'https://images.unsplash.com/photo-1587202372583-49330a15584d?w=500',
+                'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=500',
+            ],
             'monitor' => [
                 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500',
+                'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=500',
             ],
-            'gear' => [
+            'keyboard' => [
+                'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500',
                 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500',
+            ],
+            'mouse' => [
                 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500',
+                'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500',
+            ],
+            'headset' => [
+                'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500',
+                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
             ],
             'chair' => [
                 'https://images.unsplash.com/photo-1580481072645-022f9a6d8310?w=500',
+                'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500',
             ],
         ];
 
@@ -132,53 +157,74 @@ class ProductSeeder extends Seeder
                         $name = "Vi Xử Lý CPU {$brand} Core ".($i % 2 == 0 ? 'i5-13400F' : 'i7-14700K');
                         $price = rand(4, 11) * 1000000 + 90000;
                         $specs = ['socket' => 'LGA 1700 / AM5', 'cores' => '10-20 Cores', 'base_clock' => '3.4 GHz'];
+                        $img = $images['cpu'][$i % count($images['cpu'])];
                     } elseif ($i % 3 == 1) {
                         $name = "Card Màn Hình {$brand} GeForce RTX ".($i % 2 == 0 ? '4060 Ti 8GB' : '4070 SUPER 12GB');
                         $price = rand(8, 25) * 1000000 + 90000;
                         $specs = ['vram' => '8GB - 12GB GDDR6X', 'bus' => '192-bit'];
+                        $img = $images['vga'][$i % count($images['vga'])];
                     } else {
                         $name = "Bo Mạch Chủ Mainboard {$brand} ".($i % 2 == 0 ? 'B760M-PLUS WIFI' : 'Z790 GAMING X');
                         $price = rand(3, 8) * 1000000 + 50000;
                         $specs = ['chipset' => 'Intel B760 / Z790', 'form_factor' => 'ATX / Micro-ATX'];
+                        $img = $images['mainboard'][$i % count($images['mainboard'])];
                     }
-                    $img = $images['component'][$i % count($images['component'])];
                     break;
 
                 case 'case-nguon-tan':
                     $name = "{$brand} ".($i % 2 == 0 ? 'Nguồn PC 750W 80 Plus Gold' : 'Tản Nhiệt Nước AIO 360mm RGB');
                     $price = rand(1, 4) * 1000000 + 50000;
                     $specs = ['efficiency' => '80 Plus Gold', 'warranty' => '60 tháng'];
-                    $img = $images['component'][$i % count($images['component'])];
+                    $img = $images['case'][$i % count($images['case'])];
                     break;
 
                 case 'o-cung-ram':
                     $name = "{$brand} ".($i % 2 == 0 ? 'RAM Desktop DDR5 32GB (2x16GB) 6000MHz' : 'Ổ Cứng SSD NVMe Gen4 1TB 7300MB/s');
                     $price = rand(1, 4) * 1000000 + 20000;
                     $specs = ['speed' => '6000MHz / 7300MB/s', 'type' => 'DDR5 / PCIe 4.0'];
-                    $img = $images['component'][$i % count($images['component'])];
+                    $img = $images['ram'][$i % count($images['ram'])];
                     break;
 
                 case 'man-hinh':
                     $name = "Màn Hình {$brand} ".($i % 2 == 0 ? '27" 240Hz IPS Gaming' : '32" 4K UHD OLED 144Hz');
                     $price = rand(4, 18) * 1000000 + 90000;
                     $specs = ['size' => '27" - 32"', 'refresh_rate' => '165Hz - 240Hz', 'panel' => 'IPS / OLED 1ms'];
-                    $img = $images['monitor'][0];
+                    $img = $images['monitor'][$i % count($images['monitor'])];
                     break;
 
                 case 'ban-phim':
-                case 'chuot-lot':
-                case 'tai-nghe':
-                    $name = "{$brand} Gaming ".($i % 2 == 0 ? 'Bàn phím cơ Hot-Swap Wireless' : 'Chuột Không Dây Ultra-light 60g');
-                    $price = rand(8, 35) * 100000;
+                    $name = "Bàn Phím Cơ {$brand} Hot-Swap Wireless RGB";
+                    $price = rand(12, 35) * 100000;
                     $specs = ['connectivity' => 'Bluetooth 5.2 / 2.4GHz', 'battery' => '90h'];
-                    $img = $images['gear'][$i % count($images['gear'])];
+                    $img = $images['keyboard'][$i % count($images['keyboard'])];
+                    break;
+
+                case 'chuot-lot':
+                    $name = "Chuột Gaming {$brand} Ultra-light Wireless 60g";
+                    $price = rand(8, 25) * 100000;
+                    $specs = ['sensor' => 'PAW3395 26000 DPI', 'weight' => '60g'];
+                    $img = $images['mouse'][$i % count($images['mouse'])];
+                    break;
+
+                case 'tai-nghe':
+                    $name = "Tai Nghe Gaming {$brand} 7.1 Surround Sound";
+                    $price = rand(10, 30) * 100000;
+                    $specs = ['driver' => '50mm', 'surround' => '7.1 Virtual'];
+                    $img = $images['headset'][$i % count($images['headset'])];
+                    break;
+
+                case 'ghe-ban':
+                    $name = "Ghế Công Thái Học / Bàn Gaming {$brand}";
+                    $price = rand(25, 60) * 100000;
+                    $specs = ['material' => 'Lưới thoáng khí Premium', 'warranty' => '36 tháng'];
+                    $img = $images['chair'][$i % count($images['chair'])];
                     break;
 
                 default:
                     $name = "Linh Kiện Máy Tính {$brand} High-Performance Model #{$i}";
                     $price = rand(5, 50) * 100000;
                     $specs = ['warranty' => '24 tháng chính hãng'];
-                    $img = $images['gear'][0];
+                    $img = $images['pc'][0];
                     break;
             }
 
