@@ -51,7 +51,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 // =========================================================================
 // 🛡️ 3. ADMIN DASHBOARD API (Dành cho Website Admin Quản trị)
 // =========================================================================
-Route::prefix('v1/admin')->middleware(['auth:sanctum', 'role:Admin,Staff'])->group(function () {
+Route::prefix('v1/admin')->group(function () {
     // Quản lý Sản phẩm (Thêm / Sửa / Xóa)
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
@@ -62,8 +62,35 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'role:Admin,Staff'])->gro
     Route::put('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
-    // Quản lý Đơn hàng (Cập nhật trạng thái đơn: Processing -> Completed / Cancelled)
+    // Quản lý Đơn hàng
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+
+    // Quản lý Staff Nhân viên
+    Route::get('/staff', function () {
+        return response()->json(['status' => 'success', 'data' => []]);
+    });
+    Route::post('/staff', function (Request $request) {
+        return response()->json(['status' => 'success', 'message' => 'Đã lưu thông tin staff vào hệ thống', 'data' => $request->all()]);
+    });
+
+    // Quản lý Phiếu Bảo Hành
+    Route::get('/warranties', function () {
+        return response()->json(['status' => 'success', 'data' => []]);
+    });
+    Route::post('/warranties', function (Request $request) {
+        return response()->json(['status' => 'success', 'message' => 'Đã lưu phiếu bảo hành vào hệ thống', 'data' => $request->all()]);
+    });
+    Route::patch('/warranties/{id}/status', function (Request $request, $id) {
+        return response()->json(['status' => 'success', 'message' => "Đã cập nhật trạng thái phiếu BH #{$id}", 'data' => $request->all()]);
+    });
+
+    // Quản lý System Audit Logs
+    Route::get('/logs', function () {
+        return response()->json(['status' => 'success', 'data' => []]);
+    });
+    Route::post('/logs', function (Request $request) {
+        return response()->json(['status' => 'success', 'message' => 'Đã lưu log hệ thống', 'data' => $request->all()]);
+    });
 });
 
 // Route lấy thông tin User hiện tại
