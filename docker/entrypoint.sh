@@ -7,6 +7,10 @@ if [ "$APP_ENV" = "production" ] || [ "$APP_ENV" = "prod" ] || [ "$APP_ENV" = "s
     php artisan config:cache || true
     php artisan route:cache || true
     php artisan view:cache || true
+
+    echo "Running database migrations & seeders..."
+    php artisan migrate --force || true
+    php artisan db:seed --class=ProductSeeder --force || true
 fi
 
 # Ensure storage directories exist and have proper permissions
