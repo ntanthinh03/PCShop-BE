@@ -51,7 +51,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 // =========================================================================
 // 🛡️ 3. ADMIN DASHBOARD API (Dành cho Website Admin Quản trị)
 // =========================================================================
-Route::prefix('v1/admin')->group(function () {
+Route::prefix('v1/admin')->middleware(['auth:sanctum', 'role:Admin,Staff'])->group(function () {
     // Quản lý Sản phẩm (Thêm / Sửa / Xóa)
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
